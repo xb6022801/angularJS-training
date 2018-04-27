@@ -4,8 +4,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "http-server -a localhost -p 8000 -c-l ./build",
-    "prestart": "gulp build"
+    "start": "http-server -a localhost -p 8000 -c-l ./build"
   },
   "author": "",
   "license": "ISC",
