@@ -13,6 +13,6 @@
     .controller('homeCtrl', [homeCtrl])
   
   function homeCtrl() {
-    console.log('ss')
+    console.log('ssss')
   } 
 })()
