@@ -10,9 +10,17 @@
     //     controller: 'homeCtrl'
     //   })
     // }])
-    .controller('homeCtrl', [homeCtrl])
+    .controller('homeCtrl', ['$scope', homeCtrl]);
   
-  function homeCtrl() {
-    console.log('ssss')
+  function homeCtrl($scope) {
+    this.isModalVisible = false
+    // this.displayModal = function() {  
+      
+    // }
+    this.closeModal = function () {
+      console.log('close modal')
+      this.isModalVisible = false
+      $scope.$apply()
+    }
   } 
 })()

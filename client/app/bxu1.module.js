@@ -7,15 +7,17 @@
     'ui.router',
   ]).
   config(
-    ['$stateProvider', '$urlRouterProvider', '$locationProvider', 
+    ['$stateProvider', '$urlRouterProvider', '$locationProvider',
     function($stateProvider, 
              $urlRouterProvider,
              $locationProvider) {
       $locationProvider.hashPrefix('!')
-      
+
       $stateProvider
         .state('home', {
           url: '/home',
+          controller: 'homeCtrl',
+          controllerAs: 'homeCtrl',
           templateUrl: 'app/pages/home/home.temp.html'
         })
         .state('home.subhome', {

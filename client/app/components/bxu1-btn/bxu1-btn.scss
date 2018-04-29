@@ -1,4 +1,14 @@
 .bxu1-btn-container {
-  border-radius: 2px;
-  background-color: coral;
+  button {
+    border-radius: 4px;
+    border: none;
+    background-color: lightgray;
+    padding: .5em .6em;
+    font-size: 1em;
+    cursor: pointer;
+    outline: none;
+    &:hover {
+      background-color: darken(lightgray, 10%);
+    }
+  }
 }

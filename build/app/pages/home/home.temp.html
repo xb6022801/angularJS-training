@@ -1,19 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Page Title</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-  <div class="home">
-    <div class="header">
-      this is the headerss
-    </div>
-    <div ui-view>
-      this is to be replaced, yes
-    </div>
+<div class="home">
+  <div class="header">
+    this is the headerss
   </div>
-</body>
-</html>
+  <bxu1-btn bxu1-click="homeCtrl.isModalVisible = !homeCtrl.isModalVisible">display Carousel</bxu1-btn>
+  <smart-modal ng-if="homeCtrl.isModalVisible" is-full-screen="true" is-fade-out="true", smart-style="true"
+               on-close="homeCtrl.closeModal()">
+    <smart-title>
+      This is demo title
+    </smart-title>
+    <smart-body>
+      It is empty
+    </smart-body>
+    <!-- <smart-footer>
+      Ihis is footer
+    </smart-footer> -->
+  </smart-modal>
+  <div ui-view>
+    this is default home page message
+  </div>
+</div>

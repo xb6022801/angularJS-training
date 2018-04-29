@@ -28,6 +28,7 @@ var libJsFile = [
 
 var devJsFile = [
   'client/app/bxu1.module.js',
+  'client/app/app.constant.js',
   'client/app/components/**/*.js',
   'client/app/directives/*.js',
   'client/app/pages/**/*.js',
