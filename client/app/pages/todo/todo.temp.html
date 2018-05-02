@@ -4,15 +4,15 @@
       loading data.....
     </div>
     <div class="task-container">
-      <div class="task-wraper" ng-repeat="task in todo.todoDetail">
-          <!-- description: {{ obj.description }}
-          <br>
-          is done status: {{ obj.isDone }} -->
+      <div class="task-wraper" ng-repeat="task in todo.todoDetail.tasks track by $index">
           <input type="checkbox" 
                   ng-model="task.isDone"
                   ng-change="todo.testChange(task.isDone)"
           >
-          <span smart-editable="{{ task.description }}"></span>
+          <!-- <span smart-editable="{{ task.description }}"></span> --> 
+          <span ng-hide="task.editing" ng-dblclick="todo.editTask($index)">{{ task.description | puralize:15 }}</span>
+          <input type="text" ng-hide="!task.editing" class="task-input" ng-model="task.description"
+                 ng-keyup="todo.saveTask($index, $event)">
         </div>
     </div>
     <div class="new-todo-container">

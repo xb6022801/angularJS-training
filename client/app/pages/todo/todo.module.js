@@ -17,25 +17,26 @@
         this.isLoadingData = false
       })
 
-    this.testChange = (newValue) => {
-      console.log('updated value is ' + newValue)
-    }
-
     this.saveNew = function(event) {
-      // console.log(event.keyCode)
-      // console.log('new todo' + this.newTodo)
       if (event.keyCode === eventCodeMapping.enterCode) {
-        console.log('push')
-        this.todoDetail.push({
+        this.todoDetail.tasks.push({
           description: this.newTodo,
           isDone: false, 
         })
+        todoService.cacheItem(this.todoDetail)
         this.newTodo = ''
       }
     }
 
-    // $scope.testFn = function() {
-    //   console.log('tet')
-    // }
+    this.editTask = function(index) {
+      this.todoDetail.tasks[index].editing = true
+    }
+
+    this.saveTask = function(index, event) {
+      if (event.keyCode === eventCodeMapping.enterCode) {
+        delete this.todoDetail.tasks[index].editing
+        todoService.cacheItem(this.todoDetail)
+      }
+    }
   }
 })()
