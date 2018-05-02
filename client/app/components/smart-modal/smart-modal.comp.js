@@ -13,29 +13,37 @@ angular.module('myApp')
       onClose: '&'
     },
     controller: ['$document', 'eventCodeMapping', function($document, eventCodeMapping) {
-      var ctrl = this
+      var ctrl = this,
+          exitModalEvent
+
       this.localStyle = {color: 'blue'}
+
+      exitModalEvent = function (event) {
+        var _self = event.target
+        if (event.which === eventCodeMapping.exitCode) {
+          ctrl.onClose()
+        }
+      }
+
       this.$onInit = function() {
         console.log('on init')
-        $document.on('keydown', function(event) {
-          console.log(event.which)
-          var _self = event.target
-          // console.log(_self)
-          console.log(event.which === eventCodeMapping.exitCode)
-          // if (angular.element(_self).hasClass('.smart-modal-container')) {
-          //   console.log('in target')
-          // }
-          if (event.which === eventCodeMapping.exitCode) {
-            ctrl.onClose()
-          }
-        })
+        $document.on('keydown', exitModalEvent)
       }
       this.$onDestroy = function() {
         console.log('on destroy')
+        $document.off('keydown', exitModalEvent)
       }
-      // this.setLocalStyle = function() {
-      //   console.log('set smart style')
-      //   this.smartStyle = {color: 'green'}
-      // }
     }]
   })
+
+  // function exitModal(event) {
+  //   var _self = event.target
+  //   // console.log(_self)
+  //   console.log(event.which === eventCodeMapping.exitCode)
+  //   // if (angular.element(_self).hasClass('.smart-modal-container')) {
+  //   //   console.log('in target')
+  //   // }
+  //   if (event.which === eventCodeMapping.exitCode) {
+  //     ctrl.onClose()
+  //   }    
+  // }

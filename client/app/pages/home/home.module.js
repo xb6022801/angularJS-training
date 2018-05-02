@@ -10,9 +10,9 @@
     //     controller: 'homeCtrl'
     //   })
     // }])
-    .controller('homeCtrl', ['$scope', homeCtrl]);
+    .controller('homeCtrl', ['$scope', '$state', homeCtrl]);
   
-  function homeCtrl($scope) {
+  function homeCtrl($scope, $state) {
     this.isModalVisible = false
     // this.displayModal = function() {  
       
@@ -21,6 +21,12 @@
       console.log('close modal')
       this.isModalVisible = false
       $scope.$apply()
+    }
+
+    this.checkTodoDetail = function() {
+      $state.go('todo', {
+        id: '2'
+      })
     }
   } 
 })()

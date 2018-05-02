@@ -1,0 +1,8 @@
+@mixin smart-input {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid grey;
+  border-radius: 4px;
+  outline: none;
+}

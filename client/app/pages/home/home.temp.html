@@ -1,19 +1,19 @@
 <div class="home">
   <div class="header">
-    this is the headerss
+    this is the headerssss
   </div>
   <bxu1-btn bxu1-click="homeCtrl.isModalVisible = !homeCtrl.isModalVisible">display Carousel</bxu1-btn>
   <smart-modal ng-if="homeCtrl.isModalVisible" is-full-screen="true" is-fade-out="true", smart-style="true"
                on-close="homeCtrl.closeModal()">
     <smart-title>
-      This is demo title
+      Demo title.....
     </smart-title>
     <smart-body>
-      It is empty
+      <input type="button" value="check todo detail" ng-click="homeCtrl.checkTodoDetail()">
     </smart-body>
-    <!-- <smart-footer>
-      Ihis is footer
-    </smart-footer> -->
+    <smart-footer>
+      Ihis is footer.
+    </smart-footer>
   </smart-modal>
   <div ui-view>
     this is default home page message

@@ -9,7 +9,8 @@ var gulp = require('gulp'),
     processhtml = require('gulp-processhtml'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
-    cssnano = require('gulp-cssnano')
+    cssnano = require('gulp-cssnano'),
+    babel = require('gulp-babel')
 
 var devDeployFolder = './build',
     timestamp = new Date().getTime(),
@@ -17,7 +18,9 @@ var devDeployFolder = './build',
     cssResource
 
 var scssFiles = [
-  'client/app/**/*.scss'
+  'client/statics/style/*.scss',
+  'client/app/**/*.scss',
+
 ]
 
 var libJsFile = [
@@ -29,10 +32,11 @@ var libJsFile = [
 var devJsFile = [
   'client/app/bxu1.module.js',
   'client/app/app.constant.js',
+  'client/app/services/*.js',
+  'client/app/bxu1.route.js',
   'client/app/components/**/*.js',
   'client/app/directives/*.js',
   'client/app/pages/**/*.js',
-  'client/app/services/*.svc.js',
   // 'client/app/bxu1.route.js',
 ]
 
@@ -73,6 +77,9 @@ gulp.task('process-js', function() {
     .pipe(gulp.dest(devDeployFolder))
 
   gulp.src(devJsFile, {base: './client'})
+    .pipe(babel({
+      presets: ['env']
+    }))
     .pipe(uglify({mangle: false}))
     .pipe(concat('j' + timestamp + '.min.js'))
     .pipe(gulp.dest(devDeployFolder + '/static/js'))
@@ -109,8 +116,8 @@ gulp.task('process-index-css', function() {
 gulp.task('build', function() {
   runsequence(
     'clean',
-    'process-js',
     'process-scss',
+    'process-js',
     'process-index-css',
     'process-index-js',
     'process-html'
