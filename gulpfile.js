@@ -92,13 +92,15 @@ gulp.task('process-index-js', function() {
       devDeployFolder + '/static/js/j' + timestamp + '.min.js',
       {read: false}
     )
-  
+
+    console.log(typeof jsResource)
+
     gulp.src('index.html')
       .pipe(inject(jsResource, {ignorePath: 'build/', addRootSlash: false}))
       .pipe(gulp.dest('./'))
       .pipe(processhtml({}))
       .pipe(gulp.dest(devDeployFolder))
-  }, 1000)
+  }, 2000)
 })
 
 gulp.task('process-index-css', function() {
@@ -111,15 +113,15 @@ gulp.task('process-index-css', function() {
       .pipe(gulp.dest('./'))
       .pipe(processhtml())
       .pipe(gulp.dest(devDeployFolder))
-  }, 1500)
+  }, 3000)
 })
 
 gulp.task('build', function() {
   runsequence(
     'clean',
-    'process-scss',
+   'process-scss',
     'process-js',
-    'process-index-css',
+   'process-index-css',
     'process-index-js',
     'process-html'
   )

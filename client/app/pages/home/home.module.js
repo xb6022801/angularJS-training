@@ -18,7 +18,7 @@
       
     // }
     this.closeModal = function () {
-      console.log('close modal')
+      console.log('close modal is')
       this.isModalVisible = false
       $scope.$apply()
     }

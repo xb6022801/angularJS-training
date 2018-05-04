@@ -11,14 +11,18 @@
     this.isLoadingData = todoId != null
     this.newTodo = ''
 
-    todoService.getItem(2)
+    todoService.getItem(todoId)
       .then((data) => {
-        this.todoDetail = data
+        this.todoDetail = data || {
+          id: todoId,
+          tasks: []
+        }
         this.isLoadingData = false
       })
 
     this.saveNew = function(event) {
       if (event.keyCode === eventCodeMapping.enterCode) {
+        // this.todoDetail.tasks = this.todoDetail.tasks || []
         this.todoDetail.tasks.push({
           description: this.newTodo,
           isDone: false, 

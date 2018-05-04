@@ -18,7 +18,7 @@
         }, 1000)
 
         return deferred.promise
-      }
+      },
     }
   }
 })()

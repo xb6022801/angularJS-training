@@ -43,6 +43,7 @@
               ]
             },
             todoId: function($stateParams) {
+              console.log($stateParams.id)
               return $stateParams.id
             }
           },
