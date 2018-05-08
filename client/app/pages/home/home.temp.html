@@ -3,6 +3,7 @@
     this is the headerssss
   </div>
   <bxu1-btn bxu1-click="homeCtrl.isModalVisible = !homeCtrl.isModalVisible">display Carousel</bxu1-btn>
+  <bxu1-btn bxu1-click="homeCtrl.vote()">go vote</bxu1-btn>
   <smart-modal ng-if="homeCtrl.isModalVisible" is-full-screen="true" is-fade-out="true", smart-style="true"
                on-close="homeCtrl.closeModal()">
     <smart-title>
@@ -15,6 +16,7 @@
       Ihis is footer.
     </smart-footer>
   </smart-modal>
+  <input type="text" ng-model="rootUserName" ng-keyup="homeCtrl.changeRootUserName()">
   <div ui-view>
     this is default home page message
   </div>

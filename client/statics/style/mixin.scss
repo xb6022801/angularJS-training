@@ -6,3 +6,17 @@
   border-radius: 4px;
   outline: none;
 }
+
+@mixin rond-shape {
+  border-radius: 50%;
+}
+
+@mixin center-layout($width) {
+  margin: auto;
+  width: $width;
+}
+
+@mixin list-style($align) {
+  text-align: $align;
+  list-style: none;
+}

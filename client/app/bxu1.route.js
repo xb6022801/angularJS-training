@@ -17,7 +17,17 @@
         })
         .state('home.subhome', {
           url: '/subhome',
-          template: '<div>this is subhome</div>'
+          template: '<div>this is subhome {{ rootUserName  }}</div>',
+          controller: ['$scope',function($scope) {
+            $scope.rootUserName = 'subhome root user name'
+            $scope.$on('changeRootUsername', function(event, newUserName) {
+              // console.log(`new user name is ${newUserName}`)
+              $scope.rootUserName = newUserName
+              $scope.$emit('receivedMessage', {
+                message: 'get new user name equals to : ' + newUserName
+              })
+            })
+          }]
         })
         .state('home.content', {
           url: '/content',
@@ -43,14 +53,35 @@
               ]
             },
             todoId: function($stateParams) {
-              console.log($stateParams.id)
               return $stateParams.id
             }
           },
           controller: 'TodoCtrl as todo',
-        })      
+        })  
+        .state('vote', {
+          url: '/vote',
+          templateUrl: 'app/pages/vote/vote.temp.html',
+          controller: 'VoteController as voteCtrl',
+          resolve: {
+            voteDetail: function() {
+              var $injector = angular.injector(['ng']),
+                  $q = $injector.get('$q'),
+                  $http = $injector.get('$http'),
+                  deferred = $q.defer()
+
+              $http.get('/static/data/participUsers.json')
+                .success(function(data) {
+                  deferred.resolve(data)
+                })
+              return deferred.promise
+            }
+          }
+        })    
       $urlRouterProvider
         .otherwise('/home')
         
   }])
+  // .run(function($animate) {
+  //   $animate.enabled(true)
+  // })
 })()

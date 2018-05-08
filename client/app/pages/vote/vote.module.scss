@@ -1,0 +1,80 @@
+@import '../../../statics/style/mixin.scss';
+
+.vote {
+  @include center-layout(550px);
+  margin-top: 1vw;
+  padding: .4em;
+  position: relative;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+
+  & > .vote-result {
+    @include list-style(center);
+    font-size: 13px;
+    color: darken(lightgrey, 10%);
+    margin-bottom: 1em;
+
+    & > .repeat-item {
+      &.ng-enter, &.ng-leave {
+        transition: opacity .5s linear;
+      }
+
+      &.ng-enter.ng-enter-active, &.ng-leave {
+        opacity: 1;
+      }
+
+      &.ng-enter, &.ng-leave.ng-leave-active {
+        opacity: 0;
+      }
+    }
+  }
+
+  & > .header {
+    & .smart-icon {
+      color: orange;
+    }
+
+    & > .vote-subject {
+      color: lighten(black, 30%);
+    }
+  } // end header
+
+  & > .detail-container {
+    margin: 20px;
+    vertical-align: top;
+
+    & > .detail-header {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > .detail-value {
+        color: lighten(black, 35%);
+      }
+
+      & > .photo-container {
+        display: flex;
+        flex-wrap: wrap;
+    
+        & > * {
+          &:not(:first-child) {
+            margin-left: -5px;
+          }
+        }
+      } // end photo-container
+    } // end detail-header
+  } // end detail-container
+
+  & .voteAction {
+    display: block;
+    margin-bottom: .5em;
+    cursor: pointer;
+    color:  rgb(0, 132, 255);
+  }
+
+  & .clear {
+    clear: both;
+  }
+}

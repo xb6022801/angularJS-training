@@ -10,13 +10,12 @@
     //     controller: 'homeCtrl'
     //   })
     // }])
-    .controller('homeCtrl', ['$scope', '$state', homeCtrl]);
+    .controller('homeCtrl', ['$rootScope', '$scope', '$state', homeCtrl]);
   
-  function homeCtrl($scope, $state) {
+  function homeCtrl($rootScope, $scope, $state) {
+    $scope.rootUserName = 'inital vaue'
     this.isModalVisible = false
-    // this.displayModal = function() {  
-      
-    // }
+
     this.closeModal = function () {
       console.log('close modal is')
       this.isModalVisible = false
@@ -28,5 +27,18 @@
         id: '2'
       })
     }
+
+    this.changeRootUserName = function() {
+      console.log('change root user name')
+      $scope.$broadcast('changeRootUsername', $scope.rootUserName)
+    }
+
+    this.vote = function() {
+      $state.go('vote')
+    }
+
+    $scope.$on('receivedMessage', function(event, data) {
+      console.log('root | parent scope received message from child : ' + data.message)
+    })
   } 
 })()

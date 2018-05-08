@@ -1,0 +1,28 @@
+<div class="vote" ng-init="voteCtrl.setEnableActiontype()">
+  <div class="header">
+    <i class="fas fa-comments fa-lg smart-icon"></i>
+    <span>问卷投票</span>
+    <p class="vote-subject">{{ voteCtrl.voteDetail.subject }}</p>
+  </div><!--end header-->
+  <div class="detail-container" ng-repeat="voteRes in voteCtrl.voteOptions track by $index">
+    <div class="detail-header">
+      <span class="detail-value">{{ voteRes.option.value }}</span>
+      <div class="photo-container">
+        <smart-photo ng-repeat="res in voteRes.result track by $index"
+                     photo-size="voteCtrl.photoSize"
+                     photo-path="res.photoPath" >
+        </smart-photo>
+      </div>
+    </div>
+    <smart-prgbar class="clear" percentage="voteRes.percentage"></smart-prgbar>
+  </div>  <!--end detail-container -->
+  <span class="voteAction" 
+        ng-click="voteCtrl.enableActionType == 'vote' ? voteCtrl.vote(0) : voteCtrl.cancelVote()">
+      {{ voteCtrl.enableActionType == 'vote' ? '投票' : '取消投票' }}
+  </span>
+  <ul class="vote-result">
+      <li ng-repeat="item in voteCtrl.runtimeResults track by $index" class="repeat-item">
+        {{ item.description }}
+      </li>
+    </ul>
+</div>

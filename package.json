@@ -24,5 +24,6 @@
     "http-server": "^0.11.1",
     "rimraf": "^2.6.2",
     "run-sequence": "latest"
-  }
+  },
+  "dependencies": {}
 }

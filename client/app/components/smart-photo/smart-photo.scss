@@ -1,0 +1,9 @@
+@import '../../../statics/style/mixin.scss';
+
+.smart-photo {
+  @include rond-shape();
+  border: 1px solid lightgrey;
+  &:hover {
+    cursor: pointer;
+  }
+}

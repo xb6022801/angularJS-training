@@ -20,13 +20,18 @@ var devDeployFolder = './build',
 var scssFiles = [
   'client/statics/style/*.scss',
   'client/app/**/*.scss',
+]
 
+var vendorCssFiles = [
+  'client/bower_components/components-font-awesome/css/*.min.css',
+  'client/bower_components/components-font-awesome/webfonts/*',  
 ]
 
 var libJsFile = [
   'client/bower_components/angular/angular.min.js',
   'client/bower_components/angular-cookies/angular-cookies.min.js',
-  'client/bower_components/angular-ui-router/release/angular-ui-router.min.js'
+  'client/bower_components/angular-ui-router/release/angular-ui-router.min.js',
+  'client/bower_components/angular-animate/angular-animate.min.js'
 ]    
 
 var devJsFile = [
@@ -36,17 +41,25 @@ var devJsFile = [
   'client/app/services/*.js',
   'client/app/bxu1.route.js',
   'client/app/components/**/*.js',
-  'client/app/directives/*.js',
+  'client/app/directives/**/*.js',
   'client/app/pages/**/*.js',
   // 'client/app/bxu1.route.js',
 ]
 
 var pageHtmls = [
-  'client/app/pages/**/*.html'
+  'client/app/pages/**/*.html',
 ]
 
 var componentHtmls = [
   'client/app/components/**/*.html'
+]
+
+var directiveHtmls = [
+  'client/app/directives/**/*.html'
+]
+
+var jsons = [
+  'client/statics/data/*.json'
 ]
 
 gulp.task('clean', function(cb) {
@@ -54,6 +67,9 @@ gulp.task('clean', function(cb) {
 })
 
 gulp.task('process-scss', function() {
+  gulp.src(vendorCssFiles, {base: './client'})
+    .pipe(gulp.dest(devDeployFolder))
+
   gulp.src(scssFiles)
     .pipe(sass({outputStyle: 'expanded'}))
     .pipe(autoprefixer('last 2 versions', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
@@ -71,6 +87,13 @@ gulp.task('process-html', function() {
   gulp.src(componentHtmls)
     .pipe(processhtml({}))
     .pipe(gulp.dest(devDeployFolder + '/app/components'))
+
+  gulp.src(directiveHtmls)
+    .pipe(processhtml({}))
+    .pipe(gulp.dest(devDeployFolder + '/app/directives'))
+  
+  gulp.src(jsons)
+    .pipe(gulp.dest(devDeployFolder + '/static/data'))
 })
 
 gulp.task('process-js', function() {
@@ -92,8 +115,6 @@ gulp.task('process-index-js', function() {
       devDeployFolder + '/static/js/j' + timestamp + '.min.js',
       {read: false}
     )
-
-    console.log(typeof jsResource)
 
     gulp.src('index.html')
       .pipe(inject(jsResource, {ignorePath: 'build/', addRootSlash: false}))
@@ -131,6 +152,8 @@ gulp.task('watch', function() {
   gulp.watch(devJsFile, ['process-js', 'process-index-js'])
   gulp.watch(pageHtmls, ['process-html'])
   gulp.watch(componentHtmls, ['process-html'])
+  gulp.watch(directiveHtmls, ['process-html'])
+  gulp.watch(jsons, ['process-html'])
   gulp.watch(scssFiles, ['process-scss', 'process-index-css'])
 })
 
