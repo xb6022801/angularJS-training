@@ -1,15 +1,16 @@
 (function() {
   angular.module('myApp')
     .controller('VoteController', 
-                ['$scope', '$http', '$log', '$interval', 'voteDetail',
-                 'voteService', 'mockedSession',
+                ['$scope', '$http', '$log', '$interval', '$timeout',
+                 'voteDetail', 'voteService', 'mockedSession',
                  VoteController])
   
-  function VoteController ($scope, $http, $log, $interval, voteDetail, voteService, 
-                           mockedSession) {
+  function VoteController ($scope, $http, $log, $interval, $timeout, voteDetail, 
+                           voteService, mockedSession) {
     var ctrl = this,
         currentTime
-     
+    
+    ctrl.errorMessage = ""
     ctrl.voteDetail = voteDetail || {}
     ctrl.photoSize = {
       width: '30px',
@@ -35,10 +36,13 @@
       }
       voteDetail.results.push(newResult)
       ctrl.runtimeResults.push({
+        type: 'regular',
         timing: new Date().getTime(),
         description: `${mockedSession.pseudo}在问卷投票'${voteDetail.subject}' 
           中投给了 ${voteDetail.options[$index].value}`
       })
+      // save in db
+      ctrl.saveResult(voteDetail)
     }
 
     ctrl.cancelVote = function () {
@@ -53,6 +57,24 @@
             中取消了投票`
         })   
       }
+      // save in db
+      ctrl.saveResult(voteDetail)      
+    }
+
+    ctrl.saveResult = function (voteDetail) {
+      voteService.saveResults(voteDetail).then(data => {
+        console.log(data)
+        if (data.error) {
+          $timeout(function() {
+            voteDetail.results.splice(-1, 1)
+            ctrl.runtimeResults.push({
+              type: 'error',
+              timing: new Date().getTime(),
+              description: `${mockedSession.pseudo} 的操作没有被记录: ${data.error}` 
+            })
+          }, 1000)          
+        }
+      })
     }
 
     ctrl.setEnableActiontype = function() {

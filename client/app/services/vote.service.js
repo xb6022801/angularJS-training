@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('myApp')
-  .factory('voteService', [TodoService])
+  .factory('voteService', ['$http','$q', VoteService])
 
-  function TodoService () {
+  function VoteService ($http, $q) {
     return {
       unifierResult: function(voteDetail) {
         var voteOptions = []
@@ -16,6 +16,24 @@
           voteOptions.push(voteRes)
         })      
         return voteOptions  
+      },
+      saveResults: function(voteDetail) {
+        var deferred = $q.defer()
+        $http({
+          method: 'POST',
+          url: '/vote/saveParticipUser',
+          data: {
+            voteDetail,
+          }
+        }).then(data => {
+          if (data.data.error) {
+            deferred.resolve({ error: data.data.error })
+          } else {
+            deferred.resolve({ message: 'saved successfully '})
+          }
+        })   
+        
+        return deferred.promise
       }
     }
   }

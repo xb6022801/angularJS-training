@@ -21,8 +21,10 @@
       {{ voteCtrl.enableActionType == 'vote' ? '投票' : '取消投票' }}
   </span>
   <ul class="vote-result">
-      <li ng-repeat="item in voteCtrl.runtimeResults track by $index" class="repeat-item">
+      <li ng-repeat="item in voteCtrl.runtimeResults track by $index" class="repeat-item",
+          ng-style="item.type == 'error' ? {color: 'red'} : ''">
         {{ item.description }}
       </li>
-    </ul>
+  </ul>
+  <!-- <p class="error" ng-hide="voteCtrl.errorMessage.length == 0">{{ voteCtrl.errorMessage }}</p> -->
 </div>
