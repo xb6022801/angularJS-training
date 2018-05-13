@@ -25,17 +25,15 @@ var crawler = function() {
               console.log(err)
             } else {
               var $ = cheerio.load(response.text),
-                  select = $('select option')
-             
-              // res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'})
-              var requestLength = Math.min(select.length, 10) // 只取前10页的内容
+                  select = $('select option'),
+                   requestLength = Math.min(select.length, 10) // 只取前10页的内容
     
               for (var i = 0; i < requestLength; i++) { 
                 var href = select.eq(i).attr('value')
                 pageUrls.push('https://www.dy2018.com' + href)
               }
     
-              //use async.mapLimit(coll, limit, iteratee, callbackopt) control concurrent
+              //use async.mapLimit to control concurrent
               async.mapLimit(pageUrls, 5, function(url, callback) {
                 debounceFn(crowler, url, callback)
               }, function(err, results) {
@@ -162,11 +160,3 @@ var crawler = function() {
 }
 
 module.exports= crawler
-
-// fs.writeFile('result.json', JSON.stringify(titles_temp, 0, 4),
-// 'utf-8', (err, data) => {
-//   if (err) {
-//     console.log(err)
-//   }
-//  }
-// ) // end write file
