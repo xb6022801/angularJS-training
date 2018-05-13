@@ -20,3 +20,17 @@
   text-align: $align;
   list-style: none;
 }
+
+@mixin smart-btn($bgcolor, $color) {
+  border-radius: 3px;
+  padding: 8px 12px;
+  background-color: $bgcolor;
+  color: $color;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: lighten($bgcolor, 20%);
+    color: darken($color, 50%);
+  }
+}

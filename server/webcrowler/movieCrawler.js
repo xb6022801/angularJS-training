@@ -3,63 +3,72 @@ var superagent = require('superagent')
     
 var cheerio = require('cheerio'),
     eventproxy = require('eventproxy'),
-    async = require('async',)
-    http = require('http'),
+    async = require('async'),
     fs = require('fs')
 
-var ep = new eventproxy()
-    entryUrl = 'https://www.dy2018.com/html/gndy/dyzz/index.html',
-    pageUrls = []    
+var ep = new eventproxy(),
+    curCount = 0,
+    pageUrls = [],
+    entryUrl = 'https://www.dy2018.com/html/gndy/dyzz/index.html'
 
-function start() {
-  var curCount = 0
+var crawler = function() {
 
-  function onRequest(req, res) {
-    superagent.get(entryUrl)
-      .charset('gbk')
-      .end(function(err, response) {
-        if (err) {
-          console.log(err)
-        } else {
-          var $ = cheerio.load(response.text),
-              select = $('select option')
-         
-          res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'})
-          var requestLength = Math.min(select.length, 10) // 只取前10页的内容
+  return function (req, res) {
+    curCount = 0,
+    pageUrls = []
 
-          for (var i = 0; i < requestLength; i++) { 
-            var href = select.eq(i).attr('value')
-            pageUrls.push('https://www.dy2018.com' + href)
-          }
-
-          //use async.mapLimit(coll, limit, iteratee, callbackopt) control concurrent
-          async.mapLimit(pageUrls, 5, function(url, callback) {
-            debounceFn(crowler, url, callback)
-          }, function(err, results) {
+    var promise = new Promise(function(resolve, reject) {
+          superagent.get(entryUrl)
+          .charset('gbk')
+          .end(function(err, response) {
             if (err) {
               console.log(err)
-            }
-          }) // end async
-        } // end superagent
-      }) // end end
-
-      // step 1: got each entry page, then crowler every movie per page
-      ep.after('got_links', 200, function(links) {
-        curCount = 0
-        async.mapLimit(links, 5, function(item, cb) {
-          debounceFn(analyseMovie, item, cb)
-        }, function(err, result) {
-          if (err) {
-            console.log(err)
-          }
-        })
-      })
-
-      // step 2: conclure analyzed data, send to client
-      ep.after('movie_analyzed', 200, function(items) {
-        console.log(items)
-      })
+            } else {
+              var $ = cheerio.load(response.text),
+                  select = $('select option')
+             
+              // res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'})
+              var requestLength = Math.min(select.length, 10) // 只取前10页的内容
     
+              for (var i = 0; i < requestLength; i++) { 
+                var href = select.eq(i).attr('value')
+                pageUrls.push('https://www.dy2018.com' + href)
+              }
+    
+              //use async.mapLimit(coll, limit, iteratee, callbackopt) control concurrent
+              async.mapLimit(pageUrls, 5, function(url, callback) {
+                debounceFn(crowler, url, callback)
+              }, function(err, results) {
+                if (err) {
+                  eq.throw(err)
+                }
+              }) // end async
+            } // end superagent
+          }) // end end
+    
+          // step 1: got each entry page, then crowler every movie per page
+          ep.after('got_links', 100, function(links) {
+            curCount = 0
+            async.mapLimit(links, 5, function(item, cb) {
+              debounceFn(analyseMovie, item, cb)
+            }, function(err, result) {
+              if (err) {
+                eq.throw(err)
+              }
+            })
+          })
+    
+          // step 2: conclure analyzed data, send to client
+          ep.after('movie_analyzed', 100, function(items) {
+            resolve(items)
+          })
+
+          ep.fail(function(err) {
+            reject(err)
+          })
+        })  
+        
+    return promise
   } // end onRequest
 
   /**
@@ -150,11 +159,9 @@ function start() {
       link
     })
   }
-
-  http.createServer(onRequest).listen(8000)
 }
 
-exports.start = start
+module.exports= crawler
 
 // fs.writeFile('result.json', JSON.stringify(titles_temp, 0, 4),
 // 'utf-8', (err, data) => {

@@ -1,0 +1,53 @@
+@import '../../../statics/style/mixin.scss';
+
+.movieCrowler {
+  position: relative;
+  text-align: center;
+  padding-top: 45px;
+
+  table {
+    margin: 45px auto 45px auto;
+    border-collapse: collapse;
+    width: 800px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+
+    & > thead {
+      & td {
+        color: #039;
+        line-height: 2.6em;
+        padding: 10px 8px;
+        border-bottom: 2px solid #6678b1;
+      }
+    }
+
+    & > tbody {
+      & td {
+        color: darken(#ddd, 50%);
+        line-height: 1.5em;
+        padding: 10px 8px;
+        font-size: 13px;
+        border-bottom: 1px solid #ddd;        
+      }
+    }
+  }
+
+  & .btn {
+    @include smart-btn(darken(lightgrey, 30%), lightgrey);
+  }
+
+  & .loading-data {
+    color: #039;
+    font-size: 14px;
+  }
+
+  & .linkStyle {
+    text-decoration: none;
+    cursor: pointer;
+    color: darken(lightgrey, 20%);
+
+    &:hover {
+      color: darken(lightgrey, 40%);
+    }
+  }
+}

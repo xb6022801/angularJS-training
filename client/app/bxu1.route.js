@@ -76,7 +76,12 @@
               return deferred.promise
             }
           }
-        })    
+        }) 
+        .state('movieCrowler', {
+          url: '/movieCrowler',
+          templateUrl: 'app/pages/movieCrowler/movieCrowler.temp.html',
+          controller: 'movieCrowlerCtrl as mcCtrl'
+        })   
       $urlRouterProvider
         .otherwise('/home')
         

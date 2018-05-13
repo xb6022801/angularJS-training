@@ -1,0 +1,24 @@
+<div class="movieCrowler">
+  <div>
+    <button class="btn" ng-click="mcCtrl.startCrowler()">启动爬虫</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <td>标题</td>
+        <td>评分</td>
+        <td>发布时间</td>
+        <td>链接</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="movie in mcCtrl.movies track by $index">
+        <td>{{ movie.title }}</td>
+        <td>{{ movie.rank | number }}</td>
+        <td>{{ movie.date }}</td>
+        <td><a ng-href="{{ movie.link }}" class="linkStyle">点击</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <div ng-show="mcCtrl.loading" class="loading-data">正在取得最新数据...</div>
+</div>
