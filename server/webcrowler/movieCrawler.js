@@ -45,7 +45,7 @@ var crawler = function() {
           }) // end end
     
           // step 1: got each entry page, then crowler every movie per page
-          ep.after('got_links', 100, function(links) {
+          ep.after('got_links', 200, function(links) {
             curCount = 0
             async.mapLimit(links, 5, function(item, cb) {
               debounceFn(analyseMovie, item, cb)
@@ -57,7 +57,7 @@ var crawler = function() {
           })
     
           // step 2: conclure analyzed data, send to client
-          ep.after('movie_analyzed', 100, function(items) {
+          ep.after('movie_analyzed', 200, function(items) {
             resolve(items)
           })
 

@@ -12,11 +12,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="movie in mcCtrl.movies track by $index">
+      <tr ng-repeat="movie in mcCtrl.movies track by $index"
+          class="repeat-item">
         <td>{{ movie.title }}</td>
         <td>{{ movie.rank | number }}</td>
         <td>{{ movie.date }}</td>
-        <td><a ng-href="{{ movie.link }}" class="linkStyle">点击</a></td>
+        <td><a ng-href="{{ movie.link }}" target="blank" class="linkStyle">点击</a></td>
       </tr>
     </tbody>
   </table>

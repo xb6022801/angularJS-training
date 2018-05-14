@@ -22,12 +22,32 @@
     }
 
     & > tbody {
+      & tr:hover {
+        background-color: lighten(black, 60%);  
+        & td {
+          color: white;
+        }   
+      }
       & td {
         color: darken(#ddd, 50%);
         line-height: 1.5em;
         padding: 10px 8px;
         font-size: 13px;
-        border-bottom: 1px solid #ddd;        
+        border-bottom: 1px solid #ddd;     
+      }
+
+      & > .repeat-item {
+        &.ng-enter, &.ng-leave {
+          transition: opacity .5s linear;
+        }
+  
+        &.ng-enter.ng-enter-active, &.ng-leave {
+          opacity: 1;
+        }
+  
+        &.ng-enter, &.ng-leave.ng-leave-active {
+          opacity: 0;
+        }
       }
     }
   }
