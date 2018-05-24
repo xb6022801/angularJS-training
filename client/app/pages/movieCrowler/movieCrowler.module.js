@@ -1,5 +1,3 @@
-
-
 (function() {
   'use strict'
 
@@ -10,6 +8,10 @@
     var ctrl = this
     ctrl.movies = []
     ctrl.loading = true
+
+    // test
+    ctrl.currentLocation = window.location
+    ctrl.origin = window.origin
 
     movieService.getCachedMovies()
     .then(function(data) {
