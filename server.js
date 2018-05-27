@@ -1,9 +1,31 @@
 var express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
+    session = require('express-session'),
     routes = require('./routes.js'),
     voteRoutes = require('./voteRoutes.js'),
-    port = process.argv.port || 3000
+    port = process.argv.port || 3000,
+    server = require('http').Server(app)
+
+//setup io
+require('./server/socket.io')(server)
+
+app.use(session({
+  secret: 'changeit',
+  resave: false,
+  saveUninitialized: true
+}))
+
+//test snippet
+// app.use(function(req, res, next) {
+//   console.log('session check: id = ' + req.session.id)
+//   if (!req.session.user) {
+//     res
+//       .send('require user authentication') 
+//   } else {
+//     next()
+//   }
+// })
 
 app.use(bodyParser.json())
 
@@ -12,7 +34,8 @@ app.use('/', routes)
 
 app.use(express.static('./build'))
 
-module.exports = app.listen(port, (err) => {
+
+module.exports = server.listen(port, (err) => {
   if (err) {
     console.error(err)
   } else {

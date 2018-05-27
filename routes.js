@@ -21,6 +21,14 @@ var getMovies = function (req, res) {
     )
 } 
 
+var authentication = function(req, res) {  
+  res.send({
+    isAuthenticated: req.session.user !== undefined,
+    user: req.session.user
+  })
+}
+
 router.post('/getMovies', getMovies)
+router.post('/authentication', authentication)
 
 module.exports = router

@@ -81,7 +81,12 @@
           url: '/movieCrowler',
           templateUrl: 'app/pages/movieCrowler/movieCrowler.temp.html',
           controller: 'movieCrowlerCtrl as mcCtrl'
-        })   
+        }) 
+        .state('chat', {
+          url: '/chat',
+          templateUrl: 'app/pages/chat/chat.temp.html',
+          controller: 'chatCtrl as ctCtrl'
+        })  
       $urlRouterProvider
         .otherwise('/home')
         
