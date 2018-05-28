@@ -28,7 +28,16 @@ var authentication = function(req, res) {
   })
 }
 
+var setUser = function(req, res) {
+  console.log(req.body.nickName)
+  req.session.user = {
+    nickName: req.body.nickName
+  }
+  res.status(200).end()
+}
+
 router.post('/getMovies', getMovies)
 router.post('/authentication', authentication)
+router.post('/setUser', setUser)
 
 module.exports = router

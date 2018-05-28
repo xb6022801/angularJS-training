@@ -17,10 +17,24 @@
           url: '/authentication',
         })
         .then(function(data) {
-          console.log(`chatService check: ${JSON.stringify(data)}` )
+          // console.log(`chatService check: ${JSON.stringify(data)}` )
           deferred.resolve(data)
         })
         
+        return deferred.promise
+      },
+      setNickname: function(nickName) {
+        var deferred = $q.defer()
+        $http({
+          method: 'POST',
+          url: '/setUser',
+          nickName
+        })
+        .then(function(res) {
+          console.log(res.statusCode)
+          deferred.resolve()
+        })
+
         return deferred.promise
       }
     }

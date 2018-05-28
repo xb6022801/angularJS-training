@@ -1,0 +1,9 @@
+@import '../../../statics/style/mixin.scss';
+
+.chatAuth {
+  .nickname-input {
+    @include smart-input;
+    border-radius: 0;
+    text-align: center;
+  }
+}

@@ -86,6 +86,16 @@
           url: '/chat',
           templateUrl: 'app/pages/chat/chat.temp.html',
           controller: 'chatCtrl as ctCtrl'
+        })
+        .state('chat.auth', {
+          url: '/auth',
+          templateUrl: 'app/pages/chatAuth/chatAuth.temp.html',
+          controller: 'chatAuthCtrl as caCtrl'
+        })
+        .state('chat.home', {
+          url: '/home',
+          templateUrl: 'app/pages/chatRoom/chatRoom.temp.html',
+          controller: 'chatIndexCtrl as ciCtrl',
         })  
       $urlRouterProvider
         .otherwise('/home')
