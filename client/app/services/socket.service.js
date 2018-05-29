@@ -24,11 +24,14 @@
         return deferred.promise
       },
       setNickname: function(nickName) {
+        console.log('nickname = ' + nickName)
         deferred = $q.defer()
         $http({
           method: 'POST',
           url: '/setUser',
-          nickName
+          data: {
+            nickName
+          }
         })
         .then(function(res) {
           deferred.resolve()

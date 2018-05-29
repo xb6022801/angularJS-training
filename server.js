@@ -10,6 +10,8 @@ var express = require('express'),
 //setup io
 var socketIO = require('./server/socket.io')(server)
 
+app.use(bodyParser.json())
+
 app.use(session({
   secret: 'changeit',
   resave: false,
@@ -26,8 +28,6 @@ app.use(session({
 //     next()
 //   }
 // })
-
-app.use(bodyParser.json())
 
 app.use('/vote', voteRoutes)
 app.use('/', routes)
