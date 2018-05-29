@@ -1,12 +1,10 @@
+
 var express = require('express'),
     router = express.Router(),
     fs = require('fs'),
     crawler = require('./server/webcrowler/movieCrawler')()
 
 var getMovies = function (req, res) {
-  // res.send({
-  //   message: 'received data'
-  // })
   crawler(req, res)
     .then(
       function(data) {
@@ -29,7 +27,6 @@ var authentication = function(req, res) {
 }
 
 var setUser = function(req, res) {
-  console.log(req.body.nickName)
   req.session.user = {
     nickName: req.body.nickName
   }
@@ -39,5 +36,6 @@ var setUser = function(req, res) {
 router.post('/getMovies', getMovies)
 router.post('/authentication', authentication)
 router.post('/setUser', setUser)
+// router.post('/getAllRooms', getAllRooms)
 
-module.exports = router
+  module.exports = router

@@ -4,9 +4,11 @@
   'use strict'
   
   angular.module('myApp')
-    .controller('chatIndexCtrl', [ChatIndexCtrl])
+    .controller('chatIndexCtrl', ['chatService', ChatIndexCtrl])
 
-  function ChatIndexCtrl() {
-    console.log('chatIndex')
+  function ChatIndexCtrl(chatService) {
+    chatService.socket.emit('getAllRooms', function(data) {
+      // console.log(data)
+    })
   }
 })()

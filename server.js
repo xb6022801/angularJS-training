@@ -8,7 +8,7 @@ var express = require('express'),
     server = require('http').Server(app)
 
 //setup io
-require('./server/socket.io')(server)
+var socketIO = require('./server/socket.io')(server)
 
 app.use(session({
   secret: 'changeit',
