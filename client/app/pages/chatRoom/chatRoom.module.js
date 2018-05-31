@@ -12,6 +12,7 @@
     this.currentRoom
     this.user
     this.currentRoom
+    this.connectedUsers = []
 
     var self = this
 
@@ -34,7 +35,7 @@
 
     //加入房间
     $scope.joinRoom = function(room) {
-      chatService.socket.emit('joinRoom', room, function() {
+      chatService.socket.emit('joinRoom', room, self.user, function() {
         self.joinedRoom = true
         self.currentRoom = room
         $scope.$apply()
@@ -43,21 +44,29 @@
 
     //退出房间
     $scope.quitRoom = function() {
-      chatService.socket.emit('quitRoom', self.currentRoom, function() {
+      chatService.socket.emit('quitRoom', self.currentRoom, self.user, function() {
         self.joinedRoom = false
         self.currentRoom = chatService.socket.id // maybe not
         $scope.getAllRooms() //刷新房间
       })
     }
     
-    chatService.socket.on('userJoin', function() {
+    chatService.socket.on('userJoin', function(user) {
       console.log('there is a user join')
+      self.connectedUsers.push(user)
+      $scope.$apply()
     })
     
-    chatService.socket.on('userQuit', function(room) {
-      $scope.getAllRooms() 
+    chatService.socket.on('userQuit', function(room, user) {
+      $scope.getAllRooms(); 
       if (self.currentRoom == room) {
-        console.log('there is a user quit')
+        var index = self.connectedUsers.findIndex(function(connectedUser) {
+          return connectedUser.nickName = user.nickName
+        })
+        if (~index) {
+          self.connectedUsers.splice(index, 1)
+          $scope.$apply()
+        }
       }
     })
 
@@ -73,9 +82,9 @@
         } else {
           $state.go('chat.auth')
         }
-      })
+      });
 
-    $scope.getAllRooms()
+    $scope.getAllRooms();
 
   }
 })()

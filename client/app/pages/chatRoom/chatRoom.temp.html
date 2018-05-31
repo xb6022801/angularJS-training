@@ -14,7 +14,7 @@
     <p>joined room: {{ ciCtrl.currentRoom }}</p>
     <div>
       <ul>
-        <li ng-repeat="user in connectedUsers">{{ user }}</li>
+        <li ng-repeat="user in ciCtrl.connectedUsers">{{ user.nickName }}</li>
       </ul>
     </div> <!-- users in the room -->
   </div><!-- in a room -->

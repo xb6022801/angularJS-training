@@ -3,23 +3,25 @@ var customRoom = /^room\d+$/
 
 module.exports = function (srv) {
   var io = new SocketIO(srv);
+  var connectedUser = new Map(); // manage connected users per room, 
+                                 // auto-correct when room does not exist anymore
 
   io.on('connection', function(socket) {
     socket.broadcast.emit('newconn', Math.random())
 
     //test api, to revise
-    socket.on('disconnect', function() {
-      socket.broadcast.emit('userQuit', socket.id)
+    socket.on('disconnect', function(user) {
+      socket.broadcast.emit('userQuit', socket.id, user)
     })
 
     socket.on('getAllRooms', function(cb) {
       cb(getAvailableRooms())
     })
 
-    socket.on('joinRoom', function(room, cb) {
+    socket.on('joinRoom', function(room, user, cb) {
       socket.join(room, function(err) {
         if (!err) {
-          socket.to(room).broadcast.emit('userJoin')
+          socket.to(room).broadcast.emit('userJoin', user)
           cb()
         }
       })
@@ -35,8 +37,8 @@ module.exports = function (srv) {
       })
     })
 
-    socket.on('quitRoom', function(room, cb) {
-      socket.broadcast.emit('userQuit', room); //inform other users
+    socket.on('quitRoom', function(room, user, cb) {
+      socket.broadcast.emit('userQuit', room, user); //inform other users
       socket
         .leave(room)
         .join(socket.id, function() {
