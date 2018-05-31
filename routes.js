@@ -4,18 +4,15 @@ var express = require('express'),
     crawler = require('./server/webcrowler/movieCrawler')()
 
 var getMovies = function (req, res) {
-  // res.send({
-  //   message: 'received data'
-  // })
   crawler(req, res)
     .then(
       function(data) {
-        console.log('crawler result: ')
-        console.log(data)
+        // console.log('crawler result: ')
+        // console.log(data)
         res.send(data)
       },
       function(err) {
-        console.log('crawler error')
+        // console.log('crawler error')
         res.send({ err })
       }
     )
@@ -29,7 +26,6 @@ var authentication = function(req, res) {
 }
 
 var setUser = function(req, res) {
-  console.log(req.body)
   req.session.user = {
     nickName: req.body.nickName
   }

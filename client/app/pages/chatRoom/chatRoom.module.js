@@ -18,7 +18,7 @@
 
     //得到当前所有房间
     $scope.getAllRooms = function() {
-      console.log('getAllRooms')
+      // console.log('getAllRooms')
       chatService.socket.emit('getAllRooms', function(data) {
         self.rooms = []
         self.rooms.push(...data)
@@ -27,7 +27,8 @@
     }
 
     //新建房间
-    $scope.createNewRoom = function() {
+    this.createNewRoom = function() {
+      // console.log('create new room request')
       chatService.socket.emit('createNewRoom', function(newRoomName) {
         $scope.joinRoom(newRoomName)
       })
@@ -38,7 +39,7 @@
       chatService.socket.emit('joinRoom', room, self.user, function() {
         self.joinedRoom = true
         self.currentRoom = room
-        $scope.$apply()
+        $scope.refreshConnectedUsers()
       })
     }
 
@@ -50,28 +51,28 @@
         $scope.getAllRooms() //刷新房间
       })
     }
+
+    $scope.refreshConnectedUsers = function() {
+      chatService.socket.emit('getConnectedUsers', self.currentRoom, function(users) {
+        self.connectedUsers = users;
+        $scope.$apply()
+      })
+    }
     
-    chatService.socket.on('userJoin', function(user) {
-      console.log('there is a user join')
-      self.connectedUsers.push(user)
-      $scope.$apply()
+    chatService.socket.on('userJoin', function() {
+      // console.log('there is a user join')
+      $scope.refreshConnectedUsers();
     })
     
-    chatService.socket.on('userQuit', function(room, user) {
+    chatService.socket.on('userQuit', function(room) {
       $scope.getAllRooms(); 
       if (self.currentRoom == room) {
-        var index = self.connectedUsers.findIndex(function(connectedUser) {
-          return connectedUser.nickName = user.nickName
-        })
-        if (~index) {
-          self.connectedUsers.splice(index, 1)
-          $scope.$apply()
-        }
+        $scope.refreshConnectedUsers();
       }
     })
 
     chatService.socket.on('newRoomCreated', function() {
-      $scope.getAllRooms() //刷新房间
+      $scope.getAllRooms(); //刷新房间
     })
 
     //init
