@@ -1,6 +1,7 @@
 @import '../../../statics/style/mixin.scss';
 
 .chatAuth {
+  font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
   .nickname-input {
     @include smart-input;
     border-radius: 0;

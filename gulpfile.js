@@ -62,6 +62,11 @@ var jsons = [
   'client/statics/data/*.json'
 ]
 
+var images = [
+  'client/statics/image/*'
+]
+
+
 gulp.task('clean', function(cb) {
   rimraf(devDeployFolder + '/*', cb)
 })
@@ -137,14 +142,20 @@ gulp.task('process-index-css', function() {
   }, 3000)
 })
 
+gulp.task('process-image', function() {
+  gulp.src(images)
+    .pipe(gulp.dest(devDeployFolder + '/static/image'))
+})
+
 gulp.task('build', function() {
   runsequence(
     'clean',
-   'process-scss',
+    'process-scss',
     'process-js',
-   'process-index-css',
+    'process-index-css',
     'process-index-js',
-    'process-html'
+    'process-html',
+    'process-image'
   )
 })
 
@@ -155,6 +166,7 @@ gulp.task('watch', function() {
   gulp.watch(directiveHtmls, ['process-html'])
   gulp.watch(jsons, ['process-html'])
   gulp.watch(scssFiles, ['process-scss', 'process-index-css'])
+  gulp.watch(images, ['process-image'])
 })
 
 gulp.task('default', function() {
