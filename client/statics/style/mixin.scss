@@ -34,3 +34,10 @@
     color: darken($color, 50%);
   }
 }
+
+@mixin flex($flex-direction, $justify-content) {
+  display: flex;
+  flex-direction: $flex-direction;
+  justify-content: $justify-content;
+  align-items: center;
+}

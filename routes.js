@@ -20,14 +20,22 @@ var getMovies = function (req, res) {
 
 var authentication = function(req, res) {  
   res.send({
-    isAuthenticated: req.session.user !== undefined,
+    // isAuthenticated: req.session.user !== undefined,
     user: req.session.user
   })
 }
 
 var setUser = function(req, res) {
   req.session.user = {
-    nickName: req.body.nickName
+    nickName: req.body.nickName,
+    isConnected: true
+  }
+  res.status(200).end()
+}
+
+var logoutChat = function(req, res) {
+  if (req.session.user) {
+    req.session.user.isConnected = false
   }
   res.status(200).end()
 }
@@ -35,5 +43,6 @@ var setUser = function(req, res) {
 router.post('/getMovies', getMovies)
 router.post('/authentication', authentication)
 router.post('/setUser', setUser)
+router.post('/logoutChat', logoutChat)
 
 module.exports = router

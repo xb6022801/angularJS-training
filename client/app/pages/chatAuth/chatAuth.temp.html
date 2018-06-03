@@ -1,8 +1,20 @@
 <div class="chatAuth">
   <!-- <h3>{{ title }}</h3> -->
-  <h3>What's your nickname?</h3>
-  <img src="/static/image/chat.png" alt="">
-  <input type="text" class="nickname-input" 
-          ng-model="nickName"
-         ng-keyup="setNickname($event)">
+  <!-- <h3>What's your nickname?</h3> -->
+  <div>
+    <img class="logo" src="/static/image/chat.png" alt="">
+  </div>
+  <p class="title">Bin bin's Messenger</p>
+  <div class="reset" ng-show="!userLogout">
+    <input type="text" class="nickname-input"
+      placeholder="Your nick name"
+      ng-model="nickName"
+      ng-keyup="setNickname($event)">
+    <button class="conn-btn" ng-click="setNickname($event)">进入大厅</button>
+  </div>
+  <div class="resume" ng-show="!userLogout">
+    <button class="conn-btn" ng-click="setNickname($event)">
+      继续以 <span style="font-size: 2em;">binbin</span>的身份登录
+    </button>
+  </div>
 </div>

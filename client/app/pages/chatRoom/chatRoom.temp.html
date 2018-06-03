@@ -1,3 +1,4 @@
+<!--
 <div class="chatRoom">
   <h3>welcome to the chat room, <strong>{{ciCtrl.user.nickName}}</strong></h3>
   <div ng-if="ciCtrl.joinedRoom==false">
@@ -9,14 +10,37 @@
     </ul>
     <br>
     <input type="button" value="create new room" ng-click="ciCtrl.createNewRoom()">
-  </div> <!-- home page -->
+  </div> <!-- home page 
   <div ng-if="ciCtrl.joinedRoom">
     <p>joined room: {{ ciCtrl.currentRoom }}</p>
     <div>
       <ul>
         <li ng-repeat="user in ciCtrl.connectedUsers">{{ user.nickName }}</li>
       </ul>
-    </div> <!-- users in the room -->
-  </div><!-- in a room -->
+    </div> <!-- users in the room 
+  </div><!-- in a room 
   <button ng-click="quitRoom()">quit room</button>
+</div>
+-->
+<div class="chatRoom">
+  <div class="sideBar">
+     <div class="header">
+       <div class="createRoom">
+          <span>新建</span>
+          <i class="fas fa-plus fa-lg" ng-click="createNewRoom();"></i>
+       </div>
+       <div class="logout">
+         <span>登出</span>
+         <i class="fas fa-cog fa-lg" ng-click="logout();"></i>
+       </div>
+     </div> <!-- headdr: logout -->
+     <div class="rooms">
+       <ul>
+         <li ng-repeat="room in ciCtrl.rooms" ng-click="joinRoom(room)"></li>
+       </ul>
+     </div> <!-- rooms -->
+  </div> <!-- userList: sideBar -->
+  <div class="chat">
+   
+  </div> <!-- chat content -->
 </div>

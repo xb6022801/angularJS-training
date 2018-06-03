@@ -39,6 +39,17 @@
 
         return deferred.promise
       },
+      logout: function() {
+        deferred = $q.defer()
+        $http({
+          method: 'POST',
+          url: '/logoutChat'
+        })
+        .then(function() {
+          deferred.resolve()
+        })
+        return deferred.promise
+      }
       // getAllRooms: function() {
       //   deferred = $q.defer()
       //   $http({

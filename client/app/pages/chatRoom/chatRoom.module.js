@@ -16,6 +16,15 @@
 
     var self = this
 
+    /******************  scope handler **************/
+    $scope.logout = function () {
+    //  leave all rooms
+     chatService.logout()
+       .then( function() {
+         $state.go('chat.auth')
+       })
+    }
+
     //得到当前所有房间
     $scope.getAllRooms = function() {
       // console.log('getAllRooms')
@@ -27,8 +36,8 @@
     }
 
     //新建房间
-    this.createNewRoom = function() {
-      // console.log('create new room request')
+    $scope.createNewRoom = function() {
+      console.log('create new room request')
       chatService.socket.emit('createNewRoom', function(newRoomName) {
         $scope.joinRoom(newRoomName)
       })
@@ -59,6 +68,8 @@
       })
     }
     
+    /******************  socket events **************/
+
     chatService.socket.on('userJoin', function() {
       // console.log('there is a user join')
       $scope.refreshConnectedUsers();
@@ -75,10 +86,11 @@
       $scope.getAllRooms(); //刷新房间
     })
 
-    //init
+    /******************  controller init **************/
+
     chatService.isAuthenticated()
       .then(function(res) {
-        if (res.data.user) {
+        if (res.data.user && res.data.user.isConnected) {
           self.user = res.data.user
         } else {
           $state.go('chat.auth')

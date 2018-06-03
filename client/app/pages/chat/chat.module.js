@@ -9,12 +9,10 @@
 
     chatService.isAuthenticated()
       .then(function(res) {
-        if (!res.data.isAuthenticated) {
-          // console.log('go auth')
-          $state.go('chat.auth')
-        } else {
-          // console.log('go room')
+        if (res.data.user && res.data.user.isConnected) {
           $state.go('chat.home')
+        } else {
+          $state.go('chat.auth')
         }
       })
   }
