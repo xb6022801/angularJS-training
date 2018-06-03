@@ -1,10 +1,17 @@
-var SocketIO = require('socket.io')
-var customRoom = /^room\d+$/
+var SocketIO = require('socket.io');
+var customRoom = /^room\d+$/;
+var connectedUser = new Map(); // manage connected users per room, 
+                               // auto-correct when room does not exist anymore
 
 module.exports = function (srv) {
   var io = new SocketIO(srv);
-  var connectedUser = new Map(); // manage connected users per room, 
-                                 // auto-correct when room does not exist anymore
+  var eventHandler = {
+    'getConnectedUsers': getConnectedUsers,
+    'getAllRooms': getAllRooms,
+    'createNewRoom': createNewRoom,
+    'joinRoom': joinRoom,
+    'quitRoom': quitRoom,
+  }
 
   io.on('connection', function(socket) {
     socket.broadcast.emit('newconn', Math.random())
@@ -14,55 +21,92 @@ module.exports = function (srv) {
       socket.broadcast.emit('userQuit', socket.id, user)
     })
 
-    socket.on('getConnectedUsers', function(room, cb) {
-      updateUserMap();
-      var users = connectedUser.get(room) ? connectedUser.get(room) : []
-      cb(users);
-    })
-
-    socket.on('getAllRooms', function(cb) {
-      // updateUserMap();
-      cb(getAvailableRooms())
-    })
-
-    socket.on('createNewRoom', function(cb) {
-      var newRoom = generateNewRoom()
-      socket.join(newRoom, function(err) {
-        if (!err) {
-          socket.broadcast.emit('newRoomCreated', newRoom)
-          cb(newRoom)
-        }
-      })
-    })
-
-    socket.on('joinRoom', function(room, user, cb) {
-      socket.join(room, function(err) {
-        if (!err) {
-          setConnectedUser(room, user, true);
-          socket.to(room).broadcast.emit('userJoin');
-          cb()
-        }
-      })
-    })
-
-    socket.on('quitRoom', function(room, user, cb) {
-      socket
-        .leave(room, function() {
-          setConnectedUser(room, user, false);
-          socket.broadcast.emit('userQuit', room); //inform other users
-        })
-        .join(socket.id, function() {
-          cb()
-        }) // go to default room
+    Object.keys(eventHandler).forEach((event) => {
+      socket.on(event, eventHandler[event].bind(socket))
     })
   })
 
+  /**
+   * @api public
+   * @param {room} room 
+   * @param {cb} callbakc
+   */
+  function getConnectedUsers(room, cb) {
+    updateUserMap();
+    var users = connectedUser.get(room) ? connectedUser.get(room) : []
+    cb(users);
+  }
+
+  /**
+   * @api public
+   * @param {cb} callback
+   */
+  function createNewRoom(cb) {
+    var newRoom = generateNewRoom(),
+        socket = this
+    socket.join(newRoom, function(err) {
+      if (!err) {
+        socket.broadcast.emit('newRoomCreated', newRoom)
+        cb(newRoom)
+      }
+    })
+  }
+  
+  /**
+   * @api public
+   * @param {room} room 
+   * @param {user} user 
+   * @param {cb} callback 
+   */
+  function joinRoom(room, user, cb) {
+    var socket = this
+    socket.join(room, function(err) {
+      if (!err) {
+        setConnectedUser(room, user, true);
+        socket.to(room).broadcast.emit('userJoin');
+        cb()
+      }
+    })
+  }
+
+  /**
+   * @api public
+   * @param {room} room 
+   * @param {user} user 
+   * @param {cb} callback
+   */
+  function quitRoom(room, user, cb) {
+    var socket = this
+    socket
+      .leave(room, function() {
+        setConnectedUser(room, user, false);
+        socket.broadcast.emit('userQuit', room); //inform other users
+      })
+      .join(socket.id, function() {
+        cb()
+      }) // go to default room
+  }
+
+  /**
+   * @api public
+   * @param {cb} callback
+   */
+  function getAllRooms(cb) {
+    cb(getAvailableRooms())
+  }
+
+  /**
+   * @api private
+   */
   function getAvailableRooms() {
     return Object.keys(io.sockets.adapter.rooms).filter( room => {
       return customRoom.test(room)
     })
   }
 
+  /**
+   * @api private
+   */
   function generateNewRoom() {
     var sortedRooms = getAvailableRooms().sort(function(a, b) {
       return Number(b.replace('room', '')) - Number(a.replace('room', ''))
@@ -72,6 +116,7 @@ module.exports = function (srv) {
   }
 
   /**
+   * @api private
    * @description delete room from user map if room does not exist
    */
   function updateUserMap() {
@@ -84,6 +129,7 @@ module.exports = function (srv) {
   }
 
   /**
+   * @api private
    * @param {*} room 
    * @param {*} user 
    * @param {*} isAdd 

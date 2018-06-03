@@ -1,0 +1,2 @@
+06/03:
+- to be continued at: chat auth => handle continue as | select nick name
