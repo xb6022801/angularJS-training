@@ -87,17 +87,16 @@
     })
 
     /******************  controller init **************/
-
     chatService.isAuthenticated()
-      .then(function(res) {
-        if (res.data.user && res.data.user.isConnected) {
-          self.user = res.data.user
-        } else {
-          $state.go('chat.auth')
-        }
-      });
+    .then(function(res) {
+      if (res.data.user && res.data.user.isConnected) {
+        self.user = res.data.user
+      } else {
+        $state.go('chat.auth')
+      }
+    });
 
-    $scope.getAllRooms();
+   $scope.getAllRooms();
 
   }
 })()

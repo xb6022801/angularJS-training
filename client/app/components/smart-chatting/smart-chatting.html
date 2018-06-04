@@ -1,0 +1,10 @@
+<div class="smart-chat-container">
+  smart chatting
+  <div class="content">
+    <ul class="messages">
+      <li ng-repeat="message in $ctrl.messages track by $index">
+        <smart-message message="message"></smart-message>
+      </li>
+    </ul>
+  </div><!-- content -->
+</div>
