@@ -4,15 +4,15 @@
   'use strict'
   
   angular.module('myApp')
-    .controller('chatIndexCtrl', ['$state', '$scope', 'chatService', ChatIndexCtrl])
+    .controller('chatIndexCtrl', ['$state', '$scope', 'chatService', 'eventCodeMapping', ChatIndexCtrl])
 
-  function ChatIndexCtrl($state, $scope, chatService) {
+  function ChatIndexCtrl($state, $scope, chatService, eventCodeMapping) {
     this.joinedRoom = false
     this.rooms = []
     this.currentRoom
     this.user
-    this.currentRoom
     this.connectedUsers = []
+    this.msgQueue = []
 
     var self = this
 
@@ -23,12 +23,14 @@
       joinRoom,
       quitRoom,
       refreshConnectedUsers,
+      sendMessage,
     }
 
     var socketEvs = {
       userJoin,
       userQuit,
       newRoomCreated,
+      newMessage
     }
 
     Object.keys(scopeEvs).forEach(event => {
@@ -53,7 +55,6 @@
 
     //socket events 
     function userJoin() {
-      // console.log('there is a user join')
       $scope.refreshConnectedUsers();
     }
     
@@ -65,11 +66,18 @@
     }
 
     function newRoomCreated() {
+      console.log('new room created')
       $scope.getAllRooms(); //刷新房间
     }
 
+    function newMessage(packet) {
+      // console.log(`new message sent: ${JSON.stringify(packet)}`)
+      self.msgQueue.push(packet)
+      $scope.$apply()
+    }
+
    //scope event
-   function logout () {
+    function logout () {
     //  leave all rooms
       chatService.logout()
         .then( function() {
@@ -89,7 +97,6 @@
 
     //新建房间
     function createNewRoom() {
-      console.log('create new room request')
       chatService.socket.emit('createNewRoom', function(newRoomName) {
         $scope.joinRoom(newRoomName)
       })
@@ -116,6 +123,23 @@
     function refreshConnectedUsers() {
       chatService.socket.emit('getConnectedUsers', self.currentRoom, function(users) {
         self.connectedUsers = users;
+        $scope.$apply()
+      })
+    }
+
+    function sendMessage(event) {
+      if (event.keyCode !== eventCodeMapping.enterCode) return;
+
+      var packet = {
+        message: $scope.newMessage,
+        user: self.user,
+        room: self.currentRoom,
+        date: new Date().getTime(),
+      }
+
+      chatService.socket.emit('newMessage', packet, function() {
+        $scope.newMessage = '';
+        self.msgQueue.push(packet)
         $scope.$apply()
       })
     }

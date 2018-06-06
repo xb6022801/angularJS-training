@@ -11,11 +11,17 @@ angular.module('myApp')
       // isFadeOut: '=',
       // smartStyle: '@',
       // onClose: '&'
-      messages: '<'
+      msgQueue: '<'
     },
-    controller: [SmartChatCtrl]
+    controller: ['$scope', SmartChatCtrl]
   })
 
-  function SmartChatCtrl() {
-
+  function SmartChatCtrl($scope) {
+    var self = this;
+   console.log(self.msgQueue)
+   $scope.$watch(function() {
+     return self.msgQueue.length
+   }, function() {
+     console.log('new message length: ' + self.msgQueue.length)
+   })
   }

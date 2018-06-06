@@ -6,11 +6,12 @@ var connectedUser = new Map(); // manage connected users per room,
 module.exports = function (srv) {
   var io = new SocketIO(srv);
   var eventHandler = {
-    'getConnectedUsers': getConnectedUsers,
-    'getAllRooms': getAllRooms,
-    'createNewRoom': createNewRoom,
-    'joinRoom': joinRoom,
-    'quitRoom': quitRoom,
+    getConnectedUsers,
+    getAllRooms,
+    createNewRoom,
+    joinRoom,
+    quitRoom,
+    newMessage
   }
 
   io.on('connection', function(socket) {
@@ -46,7 +47,7 @@ module.exports = function (srv) {
         socket = this
     socket.join(newRoom, function(err) {
       if (!err) {
-        socket.broadcast.emit('newRoomCreated', newRoom)
+        io.of('/').emit('newRoomCreated', newRoom)
         cb(newRoom)
       }
     })
@@ -93,6 +94,16 @@ module.exports = function (srv) {
    */
   function getAllRooms(cb) {
     cb(getAvailableRooms())
+  }
+
+  /**
+   * @api public
+   * @param {*} packet 
+   */
+  function newMessage(packet, cb) {
+    var socket = this
+    socket.to(packet.room).broadcast.emit('newMessage', packet);
+    cb();
   }
 
   /**

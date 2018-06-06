@@ -49,9 +49,13 @@
       border-top: 1px solid lightgray;
       height: 10vh;
       flex-shrink: 0;
+      padding: .2em;
 
       & > .input-box {
         flex-grow: 1;
+        @include smart-dived-input(.2em 2em);
+        // margin: 5px;
+        // border-top: 1px solid lightgray;
       }
 
       & > .tools {

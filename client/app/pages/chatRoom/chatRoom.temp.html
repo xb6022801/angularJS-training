@@ -33,17 +33,19 @@
          <span>登出</span>
          <i class="fas fa-cog fa-lg" ng-click="logout();"></i>
        </div>
-     </div> <!-- headdr: logout -->
+     </div> <!-- header: logout -->
      <div class="rooms">
        <ul>
-         <li ng-repeat="room in ciCtrl.rooms" ng-click="joinRoom(room)"></li>
+         <li ng-repeat="room in ciCtrl.rooms" ng-click="joinRoom(room)">
+           {{ room }}
+         </li>
        </ul>
      </div> <!-- rooms -->
   </div> <!-- userList: sideBar -->
   <div class="chat">
-   <smart-chatting></smart-chatting>
+   <smart-chatting msg-queue="ciCtrl.msgQueue"></smart-chatting>
    <div class="chat-input">
-    <input class="input-box" type="text">
+    <input class="input-box" type="text" ng-model="newMessage" ng-keyup="sendMessage($event);">
     <div class="tools">
     </div>
    </div>   <!-- chat-input -->
