@@ -16,7 +16,6 @@
 
     & > .header {
       height: 4vw;
-      // box-sizing: border-box;
       border-bottom: 1px solid lightgray;
       display: flex;
       align-items: center;
@@ -36,10 +35,13 @@
   & > .chat {
     flex-grow: 3;
     height: 100vh;
+    overflow-y: auto;
     @include flex(column, center);
 
     & > smart-chatting {
       flex-grow: 1;
+      width: 100%;
+      // padding: 1em;
     }
 
     & > .chat-input {
@@ -54,8 +56,6 @@
       & > .input-box {
         flex-grow: 1;
         @include smart-dived-input(.2em 2em);
-        // margin: 5px;
-        // border-top: 1px solid lightgray;
       }
 
       & > .tools {

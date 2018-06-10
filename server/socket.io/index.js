@@ -147,6 +147,7 @@ module.exports = function (srv) {
    * @description update connected user from cache
    */
   function setConnectedUser(room, user, isAdd) {
+    console.log('user = ' + JSON.stringify(user))
     updateUserMap();
     if (isAdd) {
       if (!connectedUser.get(room)) {

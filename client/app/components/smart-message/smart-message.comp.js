@@ -16,9 +16,12 @@ angular.module('myApp')
       // onClose: '&'
       message: '<'
     },
-    controller: [SmartMessageCtrl]
+    controller: ['dfPhotoSetting', SmartMessageCtrl]
   })
 
-  function SmartMessageCtrl() {
-
+  function SmartMessageCtrl(dfPhotoSetting) {
+    // console.log('message = ' + message)
+    var self = this
+    this.photoPath = dfPhotoSetting.path
+    this.photoSize = dfPhotoSetting.size
   }

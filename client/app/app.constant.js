@@ -20,3 +20,11 @@ myApp.value('mockedSession', {
   gender: 'male',
   photoPath: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9v7diyFDBEIXLGY10u_IuI9xT8V7f-rrTwj2E-uigEX-kFnJN'
 })
+
+myApp.value('dfPhotoSetting', {
+  path: 'https://mk0slamonlinensgt39k.kinstacdn.com/wp-content/uploads/2018/04/GettyImages-942823880.jpg',
+  size: {
+    width: '30px',
+    height: '30px',
+  }
+})

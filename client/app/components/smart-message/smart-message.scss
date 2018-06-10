@@ -1,0 +1,64 @@
+
+@import '../../../statics/style/mixin.scss';
+
+.smart-message {
+  // width: 100%;
+  margin: 10px;
+  
+  & > .date {
+    font-size: .8em;
+    color: grey;
+  }
+
+  & > .content {
+    margin: 0 36px;
+    font-size: 14px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    & .username {
+      color: grey;
+    }
+
+    & .photo {
+      position: absolute;
+      bottom: 0px;
+    }
+
+    & .msgContent {
+      box-sizing: border-box;
+      line-height: 30px;
+      padding: .3em .5em;
+      border-radius: 10px;
+      // margin: 0 36px;
+      // @include flex(column, flex-end);
+    }
+
+    &.selfContent {
+      align-items: flex-end;
+
+      & .photo {
+        right: -36px;
+      }
+
+      & .msgContent {
+        background-color: #0084ff;
+        color: white;       
+      }
+    }
+
+    &.otherContent {
+      align-items: flex-start;
+
+      & .photo {
+        left: -36px;
+      }
+
+      & .msgContent {
+        background-color: lightgray;     
+      }
+    }
+
+  }
+}

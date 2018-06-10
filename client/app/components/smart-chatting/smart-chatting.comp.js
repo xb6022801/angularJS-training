@@ -13,15 +13,26 @@ angular.module('myApp')
       // onClose: '&'
       msgQueue: '<'
     },
-    controller: ['$scope', SmartChatCtrl]
+    controller: ['$scope', 'chatService', SmartChatCtrl]
   })
 
-  function SmartChatCtrl($scope) {
+  function SmartChatCtrl($scope, chatService) {
     var self = this;
-   console.log(self.msgQueue)
+    // set user
+    chatService.isAuthenticated()
+      .then((res) => {
+        if (res.data.user && res.data.user.isConnected) {
+          this.user = res.data.user
+        }
+      })
+    
+  //  console.log(self.msgQueue)
    $scope.$watch(function() {
      return self.msgQueue.length
    }, function() {
-     console.log('new message length: ' + self.msgQueue.length)
+    //  console.log('new message length: ' + self.msgQueue.length)
+     self.msgQueue.forEach(message => {
+       message.self = message.user.nickName === self.user.nickName
+     })
    })
   }

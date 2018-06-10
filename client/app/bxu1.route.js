@@ -96,12 +96,38 @@
           url: '/home',
           templateUrl: 'app/pages/chatRoom/chatRoom.temp.html',
           controller: 'chatIndexCtrl as ciCtrl',
+          resolve: {
+            user: function(chatService, $q) {
+              var deferred = $q.defer()
+              chatService.isAuthenticated()
+              .then(function(res) {
+                if(res.data.user && res.data.user.isConnected) {
+                  deferred.resolve(res.data.user)
+                } else {
+                  deferred.resolve(null)
+                }
+              })  
+              return deferred.promise            
+            }
+          }
         })  
       $urlRouterProvider
         .otherwise('/home')
         
   }])
-  // .run(function($animate) {
-  //   $animate.enabled(true)
-  // })
+  // .run(['$rootScope', 'chatService', function($rootScope, chatService) {
+  //   $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+  //     console.log(toState)
+  //     if(/^chat.home$/.test(toState.name)) {
+  //       chatService.isAuthenticated()
+  //       .then(function(res) {
+  //         if (!res.data.user || !res.data.user.isConnected) {
+  //           console.log('go to chat home')
+  //           $state.go('chat.auth')
+  //         }
+  //       })
+  //     }
+  //   })
+  // }])
+
 })()

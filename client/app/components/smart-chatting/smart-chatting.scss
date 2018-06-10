@@ -1,0 +1,9 @@
+.smart-chat-container {
+  width: 100%;
+  
+  & .content {
+    & .messages {
+      list-style-type: none;
+    }
+  }
+}

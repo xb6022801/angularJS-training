@@ -4,13 +4,17 @@
   'use strict'
   
   angular.module('myApp')
-    .controller('chatIndexCtrl', ['$state', '$scope', 'chatService', 'eventCodeMapping', ChatIndexCtrl])
+    .controller('chatIndexCtrl', ['$state', '$scope', 'chatService', 'eventCodeMapping', 'user', ChatIndexCtrl])
 
-  function ChatIndexCtrl($state, $scope, chatService, eventCodeMapping) {
+  function ChatIndexCtrl($state, $scope, chatService, eventCodeMapping, user) {
+    if (!user) {
+      $state.go('chat.auth')
+    }
+    
     this.joinedRoom = false
     this.rooms = []
     this.currentRoom
-    this.user
+    this.user = user
     this.connectedUsers = []
     this.msgQueue = []
 
@@ -41,16 +45,6 @@
       chatService.socket.on(event, socketEvs[event])
     })
 
-    // controller init
-    chatService.isAuthenticated()
-    .then(function(res) {
-      if (res.data.user && res.data.user.isConnected) {
-        self.user = res.data.user
-      } else {
-        $state.go('chat.auth')
-      }
-    });
-
    $scope.getAllRooms();
 
     //socket events 
@@ -71,7 +65,6 @@
     }
 
     function newMessage(packet) {
-      // console.log(`new message sent: ${JSON.stringify(packet)}`)
       self.msgQueue.push(packet)
       $scope.$apply()
     }
@@ -104,6 +97,7 @@
 
     //加入房间
     function joinRoom(room) {
+      console.log('join room ' + self.user)
       chatService.socket.emit('joinRoom', room, self.user, function() {
         self.joinedRoom = true
         self.currentRoom = room
