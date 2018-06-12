@@ -1,2 +1,16 @@
 06/03:
 - to be continued at: chat auth => handle continue as | select nick name
+
+-目前问题：
+ - 以binbin身份继续登陆还没coding，如果从新设置user，check if old user is deleted；
+ - quit room 没有真正退出，总之还能收到room外的信息。
+ - prevent sending empty message.
+ - long message layout is not good.
+
+- 想做：
+ - someone is typing...
+ - connected user in each room.
+ - user quit, user join reminder,
+ - send emoji
+ - send message
+ - 聊天室和单对单聊天。
