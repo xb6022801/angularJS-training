@@ -37,7 +37,10 @@
      <div class="rooms">
        <ul>
          <li ng-repeat="room in ciCtrl.rooms" ng-click="joinRoom(room)">
-           {{ room }}
+           <!-- {{ room }} -->
+           <div ng-class="{roomStyle: true, selected: ciCtrl.currentRoom === room}">
+             {{ room }}
+           </div>
          </li>
        </ul>
      </div> <!-- rooms -->

@@ -29,6 +29,25 @@
           cursor: pointer;
         }
       }
+    }// .header
+
+    & > .rooms {
+      & .roomStyle {
+        @include flex(row, center);
+        align-items: center;
+        background: rgb(224, 221, 221);
+        color: darken(rgb(224, 221, 221), 50%);
+        border-bottom: 1px solid darken(rgb(224, 221, 221), 10%);
+        height: 50px;
+        &:hover {
+          cursor: pointer;
+          color: darken(rgb(224, 221, 221), 70%);
+          background: darken(rgb(224, 221, 221), 10%);
+        }
+        &.selected {
+          background: white;
+        }
+      }
     }
   } // .sideBar
 
