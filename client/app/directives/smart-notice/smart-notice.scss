@@ -1,0 +1,29 @@
+@import '../../../statics/style/mixin.scss';
+// $border-radius: 8px;
+
+.smart-notice {
+  border-radius: 6px;
+  padding: 1em 1em;
+  min-width: 100px;
+
+  &.ng-hide-add, &.ng-hide-remove {
+    transition: all .5s linear;
+  }
+
+  &.ng-hide {
+    // transform: translate(0, 100px);
+    opacity: 0;
+  }
+
+  // &.ng-hide-add.ng-hide-add-active {
+    // transform: translate(0, 0);
+    // transform-origin: right;
+    // transform: translateY(-200px);
+  // }
+
+  &.info {
+    background: #d4edda;
+    border-color: darken(#d4edda, 10%);
+    color: darken(#d4edda, 50%);
+  }
+}

@@ -2,15 +2,27 @@
   'use strict';
 
   angular.module('myApp')
-  .factory('chatService', ['$rootScope', '$http', '$q', ChatService])
+  .factory('chatService', ['$rootScope', '$http', '$q', '$timeout', ChatService])
 
-  function ChatService ($rootScope, $http, $q) {
+  function ChatService ($rootScope, $http, $q, $timeout) {
     //test snippet
     var socket = io(),
         deferred
 
     return {
       socket,
+      message: null, // to set to null
+      msgType: null,
+      setMessage: function(msg, type) {
+        console.log(msg +' ' + type)
+        var _self =this
+        this.message = msg,
+        this.msgType = type
+        $timeout(function() {
+          _self.message = null
+          _self.msgType = null
+        }, 1000)
+      },
       isAuthenticated: function() {
         deferred = $q.defer()
         $http({

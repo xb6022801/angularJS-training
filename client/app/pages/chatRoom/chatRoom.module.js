@@ -101,6 +101,7 @@
       chatService.socket.emit('joinRoom', room, self.user, function() {
         self.joinedRoom = true
         self.currentRoom = room
+        chatService.setMessage(`joined ${room}`, 'info')
         $scope.refreshConnectedUsers()
       })
     }

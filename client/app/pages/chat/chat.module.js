@@ -15,5 +15,9 @@
           $state.go('chat.auth')
         }
       })
+
+    // $scope.message = chatService.message
+    // $scope.msgType = chatService.msgType
+    $scope.chatService = chatService
   }
 })()
