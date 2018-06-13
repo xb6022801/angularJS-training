@@ -13,8 +13,8 @@
     <button class="conn-btn" ng-click="setNickname($event)">进入大厅</button>
   </div>
   <div class="resume" ng-show="!userLogout">
-    <button class="conn-btn" ng-click="setNickname($event)">
-      继续以 <span style="font-size: 2em;">binbin</span>的身份登录
+    <button class="conn-btn" ng-click="setNickname($event, sessionUser.nickName)">
+      继续以 <span style="font-size: 2em;">{{sessionUser.nickName}}</span> 的身份登录
     </button>
   </div>
 </div>

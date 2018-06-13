@@ -73,7 +73,7 @@
     function logout () {
     //  leave all rooms
       chatService.logout()
-        .then( function() {
+        .then(function() {
           $state.go('chat.auth')
         })
     }
@@ -97,7 +97,7 @@
 
     //加入房间
     function joinRoom(room) {
-      console.log('join room ' + self.user)
+      // console.log('join room ' + self.user)
       chatService.socket.emit('joinRoom', room, self.user, function() {
         self.joinedRoom = true
         self.currentRoom = room
@@ -131,6 +131,8 @@
         room: self.currentRoom,
         date: new Date().getTime(),
       }
+
+      console.log(packet)
 
       chatService.socket.emit('newMessage', packet, function() {
         $scope.newMessage = '';

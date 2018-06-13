@@ -102,7 +102,8 @@ module.exports = function (srv) {
    */
   function newMessage(packet, cb) {
     var socket = this
-    socket.to(packet.room).broadcast.emit('newMessage', packet);
+    // socket.to(packet.room).broadcast.emit('newMessage', packet);
+    socket.to(packet.room).emit('newMessage', packet);
     cb();
   }
 

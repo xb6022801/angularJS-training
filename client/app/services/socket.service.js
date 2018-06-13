@@ -14,7 +14,7 @@
       message: null, // to set to null
       msgType: null,
       setMessage: function(msg, type) {
-        console.log(msg +' ' + type)
+        // console.log(msg +' ' + type)
         var _self =this
         this.message = msg,
         this.msgType = type
@@ -36,7 +36,7 @@
         return deferred.promise
       },
       setNickname: function(nickName) {
-        console.log('nickname = ' + nickName)
+        // console.log('nickname = ' + nickName)
         deferred = $q.defer()
         $http({
           method: 'POST',

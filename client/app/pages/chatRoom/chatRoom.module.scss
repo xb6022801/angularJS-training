@@ -54,10 +54,10 @@
   & > .chat {
     flex-grow: 3;
     height: 100vh;
-    overflow-y: auto;
     @include flex(column, center);
 
     & > smart-chatting {
+      overflow-y: auto;
       flex-grow: 1;
       width: 100%;
       // padding: 1em;
@@ -65,6 +65,7 @@
 
     & > .chat-input {
       @include flex(row, center);
+      flex-shrink: 0;
       flex-wrap: nowrap;
       width: 100%;
       border-top: 1px solid lightgray;

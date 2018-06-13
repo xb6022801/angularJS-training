@@ -1,27 +1,3 @@
-<!--
-<div class="chatRoom">
-  <h3>welcome to the chat room, <strong>{{ciCtrl.user.nickName}}</strong></h3>
-  <div ng-if="ciCtrl.joinedRoom==false">
-    <p>available rooms:</p>
-    <ul>
-      <li ng-repeat="room in ciCtrl.rooms" ng-click="joinRoom(room)">
-        {{ room }}
-      </li>
-    </ul>
-    <br>
-    <input type="button" value="create new room" ng-click="ciCtrl.createNewRoom()">
-  </div> <!-- home page 
-  <div ng-if="ciCtrl.joinedRoom">
-    <p>joined room: {{ ciCtrl.currentRoom }}</p>
-    <div>
-      <ul>
-        <li ng-repeat="user in ciCtrl.connectedUsers">{{ user.nickName }}</li>
-      </ul>
-    </div> <!-- users in the room 
-  </div><!-- in a room 
-  <button ng-click="quitRoom()">quit room</button>
-</div>
--->
 <div class="chatRoom">
   <div class="sideBar">
      <div class="header">
@@ -46,7 +22,7 @@
      </div> <!-- rooms -->
   </div> <!-- userList: sideBar -->
   <div class="chat">
-   <smart-chatting msg-queue="ciCtrl.msgQueue"></smart-chatting>
+   <smart-chatting msg-queue="ciCtrl.msgQueue" smart-scroll="ciCtrl.msgQueue.length"></smart-chatting>
    <div class="chat-input">
     <input class="input-box" type="text" ng-model="newMessage" ng-keyup="sendMessage($event);">
     <div class="tools">
