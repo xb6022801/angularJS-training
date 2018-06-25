@@ -5,8 +5,8 @@
  - overflow on smart chatting instead of whole page. --> done.
  - 以binbin身份继续登陆还没coding，如果从新设置user，check if old user is deleted； --> done
  - quit room 没有真正退出，总之还能收到room外的信息。 --> done. 并不是这样
- - prevent sending empty message.
- - long message layout is not good.
+ - prevent sending empty message. --> done.
+ - long message layout is not good. --> done.
 
 
 - 想做：

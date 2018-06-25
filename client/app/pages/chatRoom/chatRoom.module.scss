@@ -1,5 +1,10 @@
 @import '../../../statics/style/mixin.scss';
 
+$chat-border: 1px solid lightgray;
+$header-height: 60px;
+$chat-input-height: 60px;
+$chat-input-lineheight: 40px;
+
 .chatRoom {
   display: flex;
   position: relative;
@@ -10,16 +15,20 @@
   
   & > .sideBar {
     flex-grow: 1;
-    border-right: 1px solid lightgrey;
+    max-width: 320px;
+    border-right: $chat-border;
     display: flex;
     flex-direction: column;
 
     & > .header {
-      height: 4vw;
-      border-bottom: 1px solid lightgray;
-      display: flex;
+      height: $header-height;
+      flex-shrink: 0;
+      border-bottom: $chat-border;
+      // display: flex;
+      @include flex(row, space-between);
       align-items: center;
-      justify-content: space-between;
+      
+      // justify-content: space-between;
       color: lighten(#0084ff, 20%);
       padding: 0 1em;
 
@@ -50,11 +59,38 @@
       }
     }
   } // .sideBar
+  
+  & > .active-chat {
+    flex-grow: 3;
+    @include flex(flex, center);
+    align-items: center;
+    & > .remind-message {
+      font-size: 1.2em;
+      color: rgb(46, 133, 75);
+    }
+  }
 
   & > .chat {
     flex-grow: 3;
     height: 100vh;
     @include flex(column, center);
+
+    & > .typing {
+      // position: absolute;
+      // left: 0;
+      // bottom: 0;
+      width: 100%;
+      padding: 3px 10px;
+      text-align: left;
+      font-size: 13px;
+      color: rgb(139, 137, 137);
+    }
+
+    & > smart-roomheader {
+      border-bottom: $chat-border;
+      width: 100%;
+      height: $header-height; 
+    }
 
     & > smart-chatting {
       overflow-y: auto;
@@ -67,15 +103,26 @@
       @include flex(row, center);
       flex-shrink: 0;
       flex-wrap: nowrap;
+      position: relative;
       width: 100%;
-      border-top: 1px solid lightgray;
-      height: 10vh;
+      border-top: $chat-border;
+      height: $chat-input-height;
       flex-shrink: 0;
       padding: .2em;
 
+      & .placeholder {
+        pointer-events: none;
+        font-size: 12px;
+        position: absolute;
+        line-height: $chat-input-lineheight;
+        top: ($chat-input-height - $chat-input-lineheight)/2;
+        left: 2em;
+        color: rgb(160, 153, 153);
+      }
+
       & > .input-box {
         flex-grow: 1;
-        @include smart-dived-input(.2em 2em);
+        @include smart-dived-input(0 2em);
       }
 
       & > .tools {

@@ -27,11 +27,12 @@
 
     & .msgContent {
       box-sizing: border-box;
-      line-height: 30px;
+      line-height: 20px;
       padding: .3em .5em;
       border-radius: 10px;
-      // margin: 0 36px;
-      // @include flex(column, flex-end);
+      text-align: left;
+      max-width: 400px;
+      word-wrap: break-word;
     }
 
     &.selfContent {

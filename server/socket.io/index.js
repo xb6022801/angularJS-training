@@ -11,7 +11,9 @@ module.exports = function (srv) {
     createNewRoom,
     joinRoom,
     quitRoom,
-    newMessage
+    newMessage,
+    typing,
+    stopTyping,
   }
 
   io.on('connection', function(socket) {
@@ -105,6 +107,24 @@ module.exports = function (srv) {
     // socket.to(packet.room).broadcast.emit('newMessage', packet);
     socket.to(packet.room).emit('newMessage', packet);
     cb();
+  }
+
+  /**
+   * @api public
+   * @param {*} packet 
+   */
+  function typing(packet) {
+    var socket = this
+    socket.to(packet.room).emit('typing', packet);
+  }
+
+  /**
+   * @api public
+   * @param {*} packet 
+   */
+  function stopTyping(packet) {
+    var socket = this
+    socket.to(packet.room).emit('stopTyping', packet);
   }
 
   /**

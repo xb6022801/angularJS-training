@@ -4,22 +4,31 @@
   'use strict'
   
   angular.module('myApp')
-    .controller('chatIndexCtrl', ['$state', '$scope', 'chatService', 'eventCodeMapping', 'user', ChatIndexCtrl])
+    .controller('chatIndexCtrl', ['$state', '$scope', 'chatService', '$timeout',
+                'eventCodeMapping', 'user', ChatIndexCtrl])
 
-  function ChatIndexCtrl($state, $scope, chatService, eventCodeMapping, user) {
+  function ChatIndexCtrl($state, $scope, chatService, $timeout, eventCodeMapping, user) {
     if (!user) {
       $state.go('chat.auth')
     }
+
+    var self = this
     
+    // controller properties
     this.joinedRoom = false
     this.rooms = []
     this.currentRoom
     this.user = user
     this.connectedUsers = []
     this.msgQueue = []
+    this.typingQueue = []
+    this.typingMessage = ''
+    this.typingTimer = null,
 
-    var self = this
+    // $scope properties
+    $scope.newMessage = ''
 
+    //scope events
     var scopeEvs = {
       logout,
       getAllRooms,
@@ -28,13 +37,17 @@
       quitRoom,
       refreshConnectedUsers,
       sendMessage,
+      postChatting,
     }
 
+    //socket reception events
     var socketEvs = {
       userJoin,
       userQuit,
       newRoomCreated,
-      newMessage
+      newMessage,
+      typing,
+      stopTyping,
     }
 
     Object.keys(scopeEvs).forEach(event => {
@@ -45,9 +58,23 @@
       chatService.socket.on(event, socketEvs[event])
     })
 
-   $scope.getAllRooms();
+    $scope.getAllRooms();
 
-    //socket events 
+    //watchers
+    $scope.$watch(function() {
+      return self.typingQueue.length;
+    }, function(newval) {
+      if (newval > 0) {
+        self.typingMessage = `${self.typingQueue.slice(0, 3).join(', ')}等
+          ${newval}人在输入...`
+      } else {
+        self.typingMessage = '';
+      }
+    })
+
+    /*
+     *socket events function handlers
+     */
     function userJoin() {
       $scope.refreshConnectedUsers();
     }
@@ -69,7 +96,27 @@
       $scope.$apply()
     }
 
-   //scope event
+    function typing(packet) {
+      if (!~self.typingQueue.indexOf(packet.user.nickName)) {
+        self.typingQueue.push(packet.user.nickName)
+      }
+      $scope.$apply()
+    }
+
+    function stopTyping(packet) {
+      var index = self.typingQueue.indexOf(packet.user.nickName);
+
+      if (~index) {
+        // self.typingQueue = self.typingQueue.splice(index, 1)
+        self.typingQueue.splice(index, 1);
+      }
+
+      $scope.$apply()      
+    }
+
+   /**
+    * scope event function handlers
+   */
     function logout () {
     //  leave all rooms
       chatService.logout()
@@ -123,22 +170,45 @@
     }
 
     function sendMessage(event) {
-      if (event.keyCode !== eventCodeMapping.enterCode) return;
+      if (event.keyCode !== eventCodeMapping.enterCode
+          || !$scope.newMessage.trim().length) {
+            var packet = {
+              user: self.user,
+              room: self.currentRoom
+            }
 
-      var packet = {
-        message: $scope.newMessage,
-        user: self.user,
-        room: self.currentRoom,
-        date: new Date().getTime(),
+            if (self.typingTimer) {
+              $timeout.cancel(self.typingTimer)
+            }
+            self.typingTimer = $timeout(function() {
+              chatService.socket.emit('stopTyping', packet)
+            }, 3000);
+            chatService.socket.emit('typing', packet)
+          } else {
+            var packet = {
+              message: $scope.newMessage,
+              user: self.user,
+              room: self.currentRoom,
+              date: new Date().getTime(),
+            }
+      
+            chatService.socket.emit('newMessage', packet, function() {
+              $scope.newMessage = '';
+              self.msgQueue.push(packet)   
+              event.target.blur()
+              $scope.$apply()
+            })
+          }
+    }
+
+    function postChatting() {
+      if (!$scope.newMessage.trim().length) {
+        self.chatting = false
+        chatService.socket.emit('stopTyping', {
+          user: self.user, 
+          room: self.currentRoom
+        })
       }
-
-      console.log(packet)
-
-      chatService.socket.emit('newMessage', packet, function() {
-        $scope.newMessage = '';
-        self.msgQueue.push(packet)
-        $scope.$apply()
-      })
     }
   }
 })()

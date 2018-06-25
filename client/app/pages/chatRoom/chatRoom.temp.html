@@ -21,12 +21,22 @@
        </ul>
      </div> <!-- rooms -->
   </div> <!-- userList: sideBar -->
-  <div class="chat">
-   <smart-chatting msg-queue="ciCtrl.msgQueue" smart-scroll="ciCtrl.msgQueue.length"></smart-chatting>
-   <div class="chat-input">
-    <input class="input-box" type="text" ng-model="newMessage" ng-keyup="sendMessage($event);">
-    <div class="tools">
-    </div>
-   </div>   <!-- chat-input -->
+  <div class="chat" ng-show="ciCtrl.currentRoom">
+    <smart-roomheader></smart-roomheader>
+    <smart-chatting msg-queue="ciCtrl.msgQueue" smart-scroll="ciCtrl.msgQueue.length"></smart-chatting>
+    <div class="typing" ng-show="ciCtrl.typingMessage.length">{{ ciCtrl.typingMessage }}</div>
+    <div class="chat-input">
+      <div ng-show="!ciCtrl.chatting" class="placeholder">输入信息, @用户...</div>
+      <input class="input-box" type="text"
+             ng-focus="ciCtrl.chatting = true"
+             ng-blur="postChatting();"
+             ng-model="newMessage"
+             ng-keyup="sendMessage($event);">
+      <div class="tools">
+      </div>
+    </div>   <!-- chat-input -->
   </div> <!-- chat content -->
+  <div class="active-chat" ng-show="!ciCtrl.currentRoom">
+    <p class="remind-message">create or join a room</p> 
+  </div>
 </div>

@@ -20,7 +20,6 @@ angular.module('myApp')
   })
 
   function SmartMessageCtrl(dfPhotoSetting) {
-    // console.log('message = ' + message)
     var self = this
     this.photoPath = dfPhotoSetting.path
     this.photoSize = dfPhotoSetting.size
